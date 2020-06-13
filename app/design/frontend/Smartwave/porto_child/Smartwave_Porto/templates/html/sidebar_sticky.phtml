@@ -1,0 +1,37 @@
+<?php
+    $sidebar_sticky = $this->getConfig('porto_settings/general/sidebar_sticky');
+?>
+<?php if($sidebar_sticky): ?>
+<script type="text/javascript">
+require([
+    'jquery',
+    'porto/resizesensor',
+    'porto/stickysidebar',
+], function ($, ResizeSensor) {
+    window.ResizeSensor = ResizeSensor;
+    if(!$("body").hasClass("page-layout-1column")) {
+        $(".sidebar-main").css("position","relative");
+        $(".sidebar-additional").css("position","relative");
+
+        $(document).ready(function(){
+            $sidebarInner = $('<div class="sidebar__inner"></div>');
+            $('.sidebar-main').children().appendTo($sidebarInner);
+            $sidebarInner.appendTo('.sidebar-main');
+
+            var pl = $('.sidebar-main').css('padding-left');
+            $('.sidebar-main').css('padding-left', 0);
+            $('.sidebar-main .sidebar__inner').css('padding-left', pl);
+
+            var sidebar = new StickySidebar('.sidebar-main', {
+                containerSelector: '#maincontent .columns',
+                innerWrapperSelector: '.sidebar__inner',
+                topSpacing: 60,
+                bottomSpacing: 10
+            });
+            setTimeout(function(){$(window).resize(); console.log('resize')}, 1000);
+            setTimeout(function(){$(window).resize(); console.log('resize')}, 2000);
+        });
+    }
+});
+</script>
+<?php endif; ?>
